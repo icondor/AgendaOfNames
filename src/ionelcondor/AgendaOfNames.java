@@ -11,7 +11,8 @@ import java.util.Scanner;
 
 public class AgendaOfNames {
 
-    String[] nameAgenda = new String[50];
+    private String[] nameAgenda = new String[50];
+    private int index;
 
 
     public static void main(String[] args) {
@@ -81,7 +82,7 @@ public class AgendaOfNames {
         return name;
     }
 
-    private int readMenuOption() {
+    private static int readMenuOption() {
         Scanner s = new Scanner(System.in);
         System.out.print("Option: ");
         int option = s.nextInt();
@@ -94,14 +95,58 @@ public class AgendaOfNames {
     }
 
     private void createItem() {
+        //daca nu am ajuns la lungime
+        // citire
+        // adaugare in array
+
+        String val = readName();
+        if(index<nameAgenda.length) {
+            nameAgenda[index] = val;
+            index++;
+
+        }
+        else
+        {
+
+
+            //try to find null slots and add th item in the first null slot
+            System.out.println("debug: try to find slots");
+            for (int i = 0; i < nameAgenda.length; i++) {
+                if (nameAgenda[i] == null) { // found one
+                    nameAgenda[i] = val;
+                    System.out.println("debug: slot found, inserted ok");
+                    break;
+                }
+            }
+
+
+
+
+        }
+
 
     }
 
 
     private void updateItem() {
         //search and if found do an update
+        boolean isFound=false;
+        String oldName = readName();
+        for (int i = 0; i < nameAgenda.length; i++) {
+            if (nameAgenda[i] != null) { // avoid a nullpointerexception
+                if (nameAgenda[i].equals(oldName)) {// oldname found
+                    System.out.println("Am gasit numele, introduceti noul nume:");
+                    String newName = readName(); // read new name
+                    nameAgenda[i] = newName; // replace old name with new name
+                    isFound=true;
+                    System.out.println("Schimbare de nume efectuata cu succes");
+                } // end old name found
+            }// end compare only the values that are not null
+        } // end for interation
+        if(!isFound)
+            System.out.println("Name not found in the agenda of names");
 
-    }
+    } // end method update
 
 
     private void deleteItem() {
